@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="menu_check_warehouse_availability"
+                  name="Check Availability"
+                  parent="stock.menu_stock_inventory_control"
+                  action="action_check_availability"
+                  sequence="10"/>
+
+    <menuitem id="menu_check_updated_count"
+                  name="Check Updated Count"
+                  parent="stock.menu_warehouse_report"
+                  action="action_check_updated_count"
+                  sequence="15"/>
+</odoo>
