@@ -1,79 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
-    <record id="view_check_availability_form" model="ir.ui.view">
-        <field name="name">stock.new_count.form</field>
-        <field name="model">stock.new_count</field>
-        <field name="arch" type="xml">
-            <form>
-                <header>
-                    <button name="action_send_inventory_check" type="object" string="Send By Email" class="oe_highlight"/>
+    <odoo>
+        <record id="view_check_availability_form" model="ir.ui.view">
+            <field name="name">stock.new_count.form</field>
+            <field name="model">stock.new_count</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_send_inventory_check" type="object" string="Send By Email" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" class="o_field_statusbar"
+                        options="{'clickable': '1', 'fold_field': 'fold'}"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="requested_by_id"/>
+                            <field name="assigned_to_id"/>
+                            <field name="done_by_date"/>
+                            <field name="finished_date"/>
+                            <field name="requested_date"/>
+                            <field name="product_ids"/>
+                            <field name="comments"/>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" groups="base.group_user" options="{'post_refresh': 'recipients'}"/>
+                        <field name="activity_ids"/>
+                        <field name="message_ids"/>
+                    </div>
+                </form>
+            </field>
+        </record>
 
-                    <field name="state" widget="statusbar" class="o_field_statusbar"
-                    options="{'clickable': '1', 'fold_field': 'fold'}"/>
-                </header>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                        <field name="requested_by_id"/>
-                        <field name="assigned_to_id"/>
-                        <field name="done_by_date"/>
-                        <field name="finished_date"/>
-                        <field name="requested_date"/>
-                        <field name="product_ids"/>
-                        <field name="comments"/>
+
+        <record id="view_check_availability_tree" model="ir.ui.view">
+            <field name="name">stock.new_count.tree</field>
+            <field name="model">stock.new_count</field>
+            <field name="priority">10</field>
+            <field name="arch" type="xml">
+                <tree string="Counting Request">
+                    <field name="name"/>
+                    <field name="assigned_to_id"/>
+                    <field name="done_by_date"/>
+                    <field name="finished_date"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_check_availability_search" model="ir.ui.view">
+            <field name="name">stock.new_count.search</field>
+            <field name="model">stock.new_count</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="requested_by_id"/>
+                    <separator/>
+                    <filter name="new" string="New" domain="[('state', '=', 'new')]"/>
+                    <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
+                    <filter name="counting" string="Counting" domain="[('state', '=', 'counting')]"/>
+
+                    <group expand="1" string="Group By">
+                        <filter string="Status" name="state" context="{'group_by':'state'}"/>
+                        <filter string="Name" name="name" context="{'group_by':'name'}"/>
+                        <filter string="Requested By" name="requested_by_id" context="{'group_by':'requested_by_id'}"/>
                     </group>
-                </sheet>
-                <div class="oe_chatter">
-                    <field name="message_follower_ids" groups="base.group_user" options="{'post_refresh': 'recipients'}"/>
-                    <field name="activity_ids"/>
-                    <field name="message_ids"/>
-                </div>
-            </form>
-        </field>
-    </record>
+                </search>
+            </field>
+        </record>
 
-    <record id="view_check_availability_tree" model="ir.ui.view">
-        <field name="name">stock.new_count.tree</field>
-        <field name="model">stock.new_count</field>
-        <field name="priority">10</field>
-        <field name="arch" type="xml">
-            <tree string="Counting Request">
-                <field name="name"/>
-                <field name="assigned_to_id"/>
-                <field name="done_by_date"/>
-                <field name="finished_date"/>
-                <field name="state"/>
-            </tree>
-        </field>
-    </record>
+        <record id="view_check_availability_calendar" model="ir.ui.view">
+            <field name="name">stock.new_count.calendar</field>
+            <field name="model">stock.new_count</field>
+            <field name="arch" type="xml">
+                <calendar string="Due inventory checks" date_start="done_by_date" color="assigned_to_id" hide_time="true">
+                    <field name="name"/>
+                    <field name="state"/>
+                    <field name="assigned_to_id"/>
+                </calendar>
+            </field>
+        </record>
 
-    <record id="view_check_availability_search" model="ir.ui.view">
-        <field name="name">stock.new_count.search</field>
-        <field name="model">stock.new_count</field>
-        <field name="arch" type="xml">
-            <search>
-                <field name="name"/>
-                <field name="state"/>
-                <field name="requested_by_id"/>
-                <separator/>
-                <filter name="new" string="New" domain="[('state', '=', 'new')]"/>
-                <filter name="done" string="Done" domain="[('state', '=', 'done')]"/>
-                <filter name="counting" string="Counting" domain="[('state', '=', 'counting')]"/>
+        <record id="action_check_updated_count" model="ir.actions.act_window">
+            <field name="name">Counting Requests</field>
+            <field name="res_model">stock.new_count</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form,calendar</field>
+        </record>
+    </odoo>
 
-                <group expand="1" string="Group By">
-                    <filter string="Status" name="state" context="{'group_by':'state'}"/>
-                    <filter string="Name" name="name" context="{'group_by':'name'}"/>
-                    <filter string="Requested By" name="requested_by_id" context="{'group_by':'requested_by_id'}"/>
-                </group>
-            </search>
-        </field>
-    </record>
-
-    <record id="action_check_updated_count" model="ir.actions.act_window">
-        <field name="name">Counting Requests</field>
-        <field name="res_model">stock.new_count</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-</odoo>
 
