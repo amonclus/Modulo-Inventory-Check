@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_check_availability_mail_template" model="mail.template">
+            <field name="name">Check Availability Template Email</field>
+            <field name="model_id" ref="check_availability.model_stock_new_count"/>
+            <field name="subject">An inventory check has been assigned to you</field>
+            <field name="email_from">{{ object.requested_by_id.email_formatted }}</field>
+            <field name="partner_to">{{ object.assigned_to_id.partner_id.id }}</field>
+            <field name="description">Notification of an inventory check</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <t t-out="object.assigned_to_id.partner_id.name"/>
+                        <br/>
+                        <br/>
+                        You have been assigned an inventory check.
+                        <br> </br>
+                        Code :
+                        <t t-out="object.name"/>
+                        <br> </br>
+                        The check must be finished before
+                        <t t-out="object.done_by_date"/>
+                        <br> </br>
+                        If you need to add any comments feel free to fill out the comments section in the report form.
+                        <br/>
+                        <br/>
+                        Thank you for completing the order.
+                        <br/>
+                        <br/>
+                        Best regards,
+                        <br/>
+                        <br/>
+                        <t t-out="object.requested_by_id.partner_id.name"/>
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+        <odoo>
+    <data>
+        <record id="view_availability_reminder_template" model="mail.template">
+            <field name="name">Check availability reminder email</field>
+            <field name="model_id" ref="check_availability.model_stock_new_count"/>
+            <field name="subject">You have a pending inventory check</field>
+            <field name="email_from">{{ object.requested_by_id.email_formatted }}</field>
+            <field name="partner_to">{{ object.assigned_to_id.partner_id.id }}</field>
+            <field name="description">Notification of an inventory check</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear
+                        <t t-out="object.assigned_to_id.partner_id.name"/>
+                        <br/>
+                        <br/>
+                        You have a pending inventory check that needs to be finished, please finish it as soon as possible.
+                        <br> </br>
+                        If you need to add any comments feel free to fill out the comments section in the report form.
+                        <br/>
+                        <br/>
+                        Thank you for completing the order.
+                        <br/>
+                        <br/>
+                        Best regards,
+                        <br/>
+                        <br/>
+                        <t t-out="object.requested_by_id.partner_id.name"/>
+                    </p>
+                </div>
+            </field>
+            <field name="auto_delete" eval="True"/>
+        </record>
+    </data>
+</odoo>
+    </data>
+</odoo>

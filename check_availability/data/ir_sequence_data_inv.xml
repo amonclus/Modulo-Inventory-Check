@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="seq_inventory" model="ir.sequence">
+        <field name="name">Inventory Check</field>
+        <field name="code">stock.check</field>
+        <field name="prefix">IC</field>
+        <field name="padding">1</field>
+    </record>
+
+</odoo>
