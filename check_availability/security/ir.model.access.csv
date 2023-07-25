@@ -1,3 +1,0 @@
-id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_wizard_check_warehouse_availability,access.wizard.check_warehouse_availability,model_wizard_check_warehouse_availability,,1,1,1,1
-access_stock_new_count,access.stock.new_count,model_stock_new_count,,1,1,1,1
